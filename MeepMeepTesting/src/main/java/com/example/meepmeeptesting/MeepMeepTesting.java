@@ -16,18 +16,18 @@ public class MeepMeepTesting {
         double right_line;
 
         double color = 1.; // 1. for red, -1. for blue
-        center_line = 14;
-        left_line = 8.;
-        right_line = 15;
+        center_line = -35;
+        left_line = -39;
+        right_line = -31;
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
-                .setDimensions(18, 15)
+                .setDimensions(17.92127, 14)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 12.78)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(center_line, -61*color, Math.toRadians(-90*color))
                                 )
-                                .lineTo(new Vector2d(right_line + 10, -50))
+                                .lineTo(new Vector2d(left_line - 10, -50))
                                 .lineToLinearHeading(new Pose2d(left_line, -30, Math.toRadians(0)))
                                 .lineTo(new Vector2d(right_line, -30))
                                 .lineTo(new Vector2d(center_line, -42))

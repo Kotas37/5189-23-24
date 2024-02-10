@@ -112,26 +112,52 @@ public class BasicAutonomous extends OpMode
 		telemetry.addData("Position: ", position);
 		telemetry.update();
 		if (color == 1.) {
-			if (Objects.equals(position, "left")) {
-				purple_pixel = drive.trajectorySequenceBuilder(start_pos)
-						.lineToLinearHeading(new Pose2d(left_line, -30, Math.toRadians(0)))
-						.lineTo(new Vector2d(right_line, -30))
-						.lineTo(new Vector2d(center_line, -42))
-						.turn(Math.toRadians(180))
-						.build();
-			} else if (Objects.equals(position, "mid")) {
-				purple_pixel = drive.trajectorySequenceBuilder(start_pos)
-						.lineTo(new Vector2d(center_line, -31))
-						.lineTo(new Vector2d(center_line, -42))
-						.turn(Math.toRadians(-90))
-						.build();
-			} else {
-				purple_pixel = drive.trajectorySequenceBuilder(start_pos)
-						.lineToLinearHeading(new Pose2d(right_line, -30*color, Math.toRadians(180)))
-						.lineTo(new Vector2d(left_line, -30))
-						.lineTo(new Vector2d(center_line, -42))
-						.build();
+			if (Objects.equals(start_dist, "close")) {
+				if (Objects.equals(position, "left")) {
+					purple_pixel = drive.trajectorySequenceBuilder(start_pos)
+							.lineTo(new Vector2d(right_line + 10, -50))
+							.lineToLinearHeading(new Pose2d(left_line, -30, Math.toRadians(0)))
+							.lineTo(new Vector2d(right_line, -30))
+							.lineTo(new Vector2d(center_line, -42))
+							.turn(Math.toRadians(180))
+							.build();
+				} else if (Objects.equals(position, "mid")) {
+					purple_pixel = drive.trajectorySequenceBuilder(start_pos)
+							.lineTo(new Vector2d(center_line, -31))
+							.lineTo(new Vector2d(center_line, -42))
+							.turn(Math.toRadians(-90))
+							.build();
+				} else {
+					purple_pixel = drive.trajectorySequenceBuilder(start_pos)
+							.lineTo(new Vector2d(right_line+7, -33))
+							.lineTo(new Vector2d(right_line+7, -45))
+							.lineTo(new Vector2d(center_line, -42))
+							.turn(Math.toRadians(-90))
+							.build();
+				}
+			} else if (Objects.equals(start_dist, "far")) {
+				if (Objects.equals(position, "left")) {
+					purple_pixel = drive.trajectorySequenceBuilder(start_pos)
+							.lineTo(new Vector2d(left_line - 7.5, -33))
+							.lineTo(new Vector2d(left_line - 7.5, -45))
+							.lineTo(new Vector2d(center_line, -42))
+							.build();
+				} else if (Objects.equals(position, "mid")) {
+					purple_pixel = drive.trajectorySequenceBuilder(start_pos)
+							.lineTo(new Vector2d(center_line, -31))
+							.lineTo(new Vector2d(center_line, -42))
+							.build();
+				} else {
+					purple_pixel = drive.trajectorySequenceBuilder(start_pos)
+							.lineTo(new Vector2d(left_line - 10, -50))
+							.lineToLinearHeading(new Pose2d(left_line, -30, Math.toRadians(0)))
+							.lineTo(new Vector2d(right_line, -30))
+							.lineTo(new Vector2d(center_line, -42))
+							.turn(Math.toRadians(180))
+							.build();
+				}
 			}
+
 		} else {
 			if (Objects.equals(position, "right")) {
 				purple_pixel = drive.trajectorySequenceBuilder(start_pos)
