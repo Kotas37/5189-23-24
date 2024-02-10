@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import android.util.Size;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -11,17 +12,17 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.arcrobotics.ftclib.hardware.ServoEx;
-import com.arcrobotics.ftclib.hardware.SimpleServo;
 
 import java.lang.Math;
 
+import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @TeleOp
+@Config
 public class drivesample extends LinearOpMode {
 
     private void wristServo(double pos, Servo s1, Servo s2) {
@@ -64,6 +65,11 @@ public class drivesample extends LinearOpMode {
         RESET,
         GRAB
     }
+
+    public static boolean armIsReverse = false;
+    public static double armPosition = 0.;
+    public static boolean jointIsReverse = true;
+    public static double jointPosition = 0.;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -123,12 +129,12 @@ public class drivesample extends LinearOpMode {
         imu.initialize(parameters);
         imu.resetYaw();
 
-        //Servo/Motor intits here
-
-        popper.setPosition(0);
-        arm.setPosition(0);
-        joint.setPosition(0);
-        claw.setPosition(0);
+//        //Servo/Motor intits here
+//
+//        popper.setPosition(0);
+//        arm.setPosition(0);
+//        joint.setPosition(0);
+//        claw.setPosition(0);
 //        arm.turnToAngle(125);
 //        joint.turnToAngle(0);
 
@@ -159,21 +165,34 @@ public class drivesample extends LinearOpMode {
 //            }
 
             //TESTING
-            if(gamepad2.a){
-                arm.setPosition(0.9);
-            }
-            if(gamepad2.b){
-                arm.setPosition(0);
-
-            }
-            if(gamepad2.y){
+//            if(gamepad2.a){
+//                arm.setPosition(0.9);
+//            }
+//            if(gamepad2.b){
+//                arm.setPosition(0);
+//
+//            }
+//            if(gamepad2.y){
+//                arm.setDirection(Servo.Direction.REVERSE);
+//
+//                arm.setPosition(0.2);
+//            }
+//            if (gamepad2.dpad_down){
+//
+//            }
+            if (armIsReverse) {
                 arm.setDirection(Servo.Direction.REVERSE);
-
-                arm.setPosition(0.2);
+            } else {
+                arm.setDirection(Servo.Direction.FORWARD);
             }
-            if (gamepad2.dpad_down){
+            arm.setPosition(armPosition);
 
+            if (jointIsReverse) {
+                joint.setDirection(Servo.Direction.REVERSE);
+            } else {
+                joint.setDirection(Servo.Direction.FORWARD);
             }
+            joint.setPosition(jointPosition);
 
             //FIRST PLAYER
 
