@@ -68,7 +68,7 @@ public class BasicAutonomous extends OpMode
 	public void init() {
 		cameraPipeline = new CameraPipeline();
 
-		yellowArm = hardwareMap.get(Servo.class, "bucket");
+		yellowArm = hardwareMap.get(Servo.class, "pickol");
 		runtime = new ElapsedTime();
 
 		state = State.PLACE_PURPLE;

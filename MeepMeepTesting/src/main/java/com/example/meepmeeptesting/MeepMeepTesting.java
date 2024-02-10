@@ -15,7 +15,7 @@ public class MeepMeepTesting {
         double left_line;
         double right_line;
 
-        double color = 1.; // 1. for red, -1. for blue
+        double color = -1.; // 1. for red, -1. for blue
         center_line = -35;
         left_line = -39;
         right_line = -31;

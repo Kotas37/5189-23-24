@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.vision.VisionProcessor;
@@ -28,13 +30,13 @@ public class CameraPipeline implements VisionProcessor {
     String outStr = "right";
 
     static final Rect MID_RECTANGLE = new Rect(
-            new Point(220, 230),
-            new Point(340, 170)
+            new Point(250, 400),
+            new Point(360, 330)
     );
 
     static final Rect RIGHT_RECTANGLE = new Rect(
-            new Point(490, 200),
-            new Point(640, 140)
+            new Point(260, 100),
+            new Point(370, 10)
     );
 
     @Override
@@ -71,9 +73,9 @@ public class CameraPipeline implements VisionProcessor {
         double averagedMidBox = leftBox / MID_RECTANGLE.area() / 255;
         double averagedRightBox = rightBox / RIGHT_RECTANGLE.area() / 255; //Makes value [0,1]
 
-        if(averagedMidBox > 0.2){
+        if(averagedMidBox > 0.6){
             outStr = "mid";
-        }else if(averagedRightBox > 0.2){
+        }else if(averagedRightBox > 0.6){
             outStr = "right";
         }else{
             outStr = "left";
@@ -82,11 +84,24 @@ public class CameraPipeline implements VisionProcessor {
 //        mat.copyTo(frame);
         return null;
     }
+    private android.graphics.Rect makeGraphicsRect(Rect rect, float scaleBmpPxToCanvasPx) {
+        int left = Math.round(rect.x * scaleBmpPxToCanvasPx);
+        int top = Math.round(rect.y * scaleBmpPxToCanvasPx);
+        int right = left + Math.round(rect.width * scaleBmpPxToCanvasPx);
+        int bottom = top + Math.round(rect.height * scaleBmpPxToCanvasPx);
 
+        return new android.graphics.Rect(left, top, right, bottom);
+    }
 
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
+        Paint rectPaint = new Paint();
+        rectPaint.setColor(Color.RED);
+        rectPaint.setStyle(Paint.Style.STROKE);
+        rectPaint.setStrokeWidth(scaleCanvasDensity * 4);
 
+        canvas.drawRect(makeGraphicsRect(MID_RECTANGLE, scaleBmpPxToCanvasPx), rectPaint);
+        canvas.drawRect(makeGraphicsRect(RIGHT_RECTANGLE, scaleBmpPxToCanvasPx), rectPaint);
     }
 
     public void setColor(String color) {
