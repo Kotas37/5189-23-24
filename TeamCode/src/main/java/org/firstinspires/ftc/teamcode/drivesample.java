@@ -77,14 +77,14 @@ public class drivesample extends LinearOpMode {
         DcMotor slideR = hardwareMap.dcMotor.get("slideRight");
         DcMotor slideL = hardwareMap.dcMotor.get("slideLeft");
         Servo popper = hardwareMap.get(Servo.class, "pickol");
-//        Servo arm = hardwareMap.get(Servo.class, "idk1");
-//        Servo joint = hardwareMap.get(Servo.class, "idk2");
+        Servo arm = hardwareMap.get(Servo.class, "idk1");
+        Servo joint = hardwareMap.get(Servo.class, "idk2");
         Servo claw = hardwareMap.get(Servo.class, "idk3");
-        ServoEx arm;
-        ServoEx joint;
+//        ServoEx arm;
+//        ServoEx joint;
 
-        arm = new SimpleServo(hardwareMap, "idk1", 0, 355);
-        joint = new SimpleServo(hardwareMap, "idk2", 0, 355 );
+//        arm = new SimpleServo(hardwareMap, "idk1", 0, 355);
+//        joint = new SimpleServo(hardwareMap, "idk2", 0, 355 );
         //REVERSINGS
 
 
@@ -99,9 +99,11 @@ public class drivesample extends LinearOpMode {
         slideR.setDirection(DcMotorSimple.Direction.FORWARD);
 
         slideL.setDirection(DcMotorSimple.Direction.REVERSE);
-
-//        joint.setDirection(Servo.Direction.REVERSE);
-        joint.setInverted(true);
+        arm.setDirection(Servo.Direction.FORWARD);
+        joint.setDirection(Servo.Direction.REVERSE);
+//        arm.setDirection(Servo.Direction.REVERSE);
+//        joint.setInverted(true);
+//        arm.setInverted(false);
 
 
         //States
@@ -124,11 +126,11 @@ public class drivesample extends LinearOpMode {
         //Servo/Motor intits here
 
         popper.setPosition(0);
-//        arm.setPosition(0);
-//        joint.setPosition(0);
-//        claw.setPosition(0);
-        arm.turnToAngle(0);
-        joint.turnToAngle(0);
+        arm.setPosition(0);
+        joint.setPosition(0);
+        claw.setPosition(0);
+//        arm.turnToAngle(125);
+//        joint.turnToAngle(0);
 
 
         //TELEOP MAIN
@@ -158,28 +160,19 @@ public class drivesample extends LinearOpMode {
 
             //TESTING
             if(gamepad2.a){
-//                arm.setPosition(1);
-//                joint.setPosition(0.6);
-
-                arm.turnToAngle(0);
-                joint.setInverted(true);
-                joint.turnToAngle(0);
-
+                arm.setPosition(0.9);
             }
             if(gamepad2.b){
-//                arm.setPosition(0);
-//                joint.setPosition(0);
-                joint.setInverted(true);
-                arm.turnToAngle(250);
-                arm.getPosition();
-                joint.setPosition(1);
+                arm.setPosition(0);
 
             }
-            if (gamepad2.dpad_up){
-                joint.setInverted(false);
+            if(gamepad2.y){
+                arm.setDirection(Servo.Direction.REVERSE);
 
+                arm.setPosition(0.2);
+            }
+            if (gamepad2.dpad_down){
 
-                joint.setPosition(0.2);
             }
 
             //FIRST PLAYER
