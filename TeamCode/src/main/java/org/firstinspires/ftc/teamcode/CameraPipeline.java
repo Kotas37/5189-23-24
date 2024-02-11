@@ -73,9 +73,9 @@ public class CameraPipeline implements VisionProcessor {
         double averagedMidBox = leftBox / MID_RECTANGLE.area() / 255;
         double averagedRightBox = rightBox / RIGHT_RECTANGLE.area() / 255; //Makes value [0,1]
 
-        if(averagedMidBox > 0.6){
+        if(averagedMidBox > 0.4){
             outStr = "mid";
-        }else if(averagedRightBox > 0.6){
+        }else if(averagedRightBox > 0.4){
             outStr = "right";
         }else{
             outStr = "left";

@@ -105,8 +105,8 @@ public class drivesample extends LinearOpMode {
         slideR.setDirection(DcMotorSimple.Direction.FORWARD);
 
         slideL.setDirection(DcMotorSimple.Direction.REVERSE);
-        arm.setDirection(Servo.Direction.FORWARD);
-        joint.setDirection(Servo.Direction.REVERSE);
+        arm.setDirection(Servo.Direction.REVERSE);
+        joint.setDirection(Servo.Direction.FORWARD);
 //        arm.setDirection(Servo.Direction.REVERSE);
 //        joint.setInverted(true);
 //        arm.setInverted(false);
@@ -114,13 +114,6 @@ public class drivesample extends LinearOpMode {
 
         //States
         State state = State.RESET;
-
-        VisionPortal portal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Goof"))
-                .setCameraResolution(new Size(640, 480))
-                .setCamera(BuiltinCameraDirection.BACK)
-                .enableLiveView(true)
-                .build();
 
         IMU imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -131,10 +124,10 @@ public class drivesample extends LinearOpMode {
 
 //        //Servo/Motor intits here
 //
-//        popper.setPosition(0);
-//        arm.setPosition(0);
-//        joint.setPosition(0);
-//        claw.setPosition(0);
+
+        arm.setPosition(0);
+        joint.setPosition(0.1);
+        claw.setPosition(0);
 //        arm.turnToAngle(125);
 //        joint.turnToAngle(0);
 
@@ -146,7 +139,7 @@ public class drivesample extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            //SECOND PLAYER
+
 //            switch (state) {
 //                case RESET:
 //                    // servo.setpos(0)
@@ -180,20 +173,39 @@ public class drivesample extends LinearOpMode {
 //            if (gamepad2.dpad_down){
 //
 //            }
-            if (armIsReverse) {
-                arm.setDirection(Servo.Direction.REVERSE);
-            } else {
-                arm.setDirection(Servo.Direction.FORWARD);
+//            if (armIsReverse) {
+//                arm.setDirection(Servo.Direction.REVERSE);
+//            } else {
+//                arm.setDirection(Servo.Direction.FORWARD);
+//            }
+//            arm.setPosition(armPosition);
+//
+//            if (jointIsReverse) {
+//                joint.setDirection(Servo.Direction.REVERSE);
+////            } else {
+////                joint.setDirection(Servo.Direction.FORWARD);
+////            }
+////            joint.setPosition(jointPosition);
+            //SECOND PLAYER
+            if(gamepad2.dpad_down){
+                arm.setPosition(0);
+                joint.setPosition(0.61);
             }
-            arm.setPosition(armPosition);
-
-            if (jointIsReverse) {
-                joint.setDirection(Servo.Direction.REVERSE);
-            } else {
-                joint.setDirection(Servo.Direction.FORWARD);
+            if(gamepad2.dpad_up){
+                arm.setPosition(0);
+                joint.setPosition(0.1);
             }
-            joint.setPosition(jointPosition);
+            if(gamepad2.y){
+                arm.setPosition(1);
+                joint.setPosition(0.31);
+            }
+            if(gamepad2.right_bumper){
+                claw.setPosition(0.4);
 
+            }
+            if(gamepad2.left_bumper){
+                claw.setPosition(0);
+            }
             //FIRST PLAYER
 
             double y = -gamepad1.left_stick_y;

@@ -65,10 +65,25 @@ public class BasicAutonomous extends OpMode
 	double left_line;
 	double right_line;
 
+	Servo arm;
+	Servo joint;
+	Servo claw;
+
 	public void init() {
 		cameraPipeline = new CameraPipeline();
 
+
+		arm = hardwareMap.get(Servo.class, "idk1");
+		joint = hardwareMap.get(Servo.class, "idk2");
+		claw = hardwareMap.get(Servo.class, "idk3");
+
+		arm.setDirection(Servo.Direction.FORWARD);
+		joint.setDirection(Servo.Direction.REVERSE);
+
+
+
 		yellowArm = hardwareMap.get(Servo.class, "pickol");
+		yellowArm.setPosition(0);
 		runtime = new ElapsedTime();
 
 		state = State.PLACE_PURPLE;
@@ -80,7 +95,7 @@ public class BasicAutonomous extends OpMode
 		start_dist = "close"; // close or far, depending on start pos
 		end_pos = "middle"; // either edge or middle, have to talk with alliance to get this value
 
-		center_line = 14.5;
+		center_line = 12;
 		left_line = 8.;
 		right_line = 15.5;
 
@@ -111,6 +126,13 @@ public class BasicAutonomous extends OpMode
 		position = cameraPipeline.getPropPosition();
 		telemetry.addData("Position: ", position);
 		telemetry.update();
+
+		portal.stopLiveView();
+		portal.stopStreaming();
+
+		cameraPipeline = null;
+		portal = null;
+
 		if (color == 1.) {
 			if (Objects.equals(start_dist, "close")) {
 				if (Objects.equals(position, "left")) {
@@ -205,53 +227,57 @@ public class BasicAutonomous extends OpMode
 							.build();
 				}
 			}
-			portal.stopLiveView();
-			portal.stopStreaming();
 		}
+		Pose2d endPos;
+		endPos = new Pose2d(center_line, -42*color, Math.toRadians(180));
 
 
 		if (Objects.equals(start_dist, "close")) {
-			yellow_pixel = drive.trajectorySequenceBuilder(purple_pixel.end())
+			yellow_pixel = drive.trajectorySequenceBuilder(endPos)
 					.lineTo(new Vector2d(50, -41*color))
 					.build();
 		} else {
 			if (Objects.equals(position, "mid")) {
-				yellow_pixel = drive.trajectorySequenceBuilder(purple_pixel.end())
+				yellow_pixel = drive.trajectorySequenceBuilder(endPos)
 						.lineTo(new Vector2d(-53, -42*color))
 						.lineTo(new Vector2d(-53, -12*color))
 						.lineTo(new Vector2d(38, -12*color))
-						.lineTo(new Vector2d(50, -35*color))
+						.lineTo(new Vector2d(50, -41*color))
 						.build();
 			} else {
-				yellow_pixel = drive.trajectorySequenceBuilder(purple_pixel.end())
+				yellow_pixel = drive.trajectorySequenceBuilder(endPos)
 						.lineTo(new Vector2d(-35, -12*color))
 						.lineTo(new Vector2d(38, -12*color))
-						.lineTo(new Vector2d(50, -35*color))
+						.lineTo(new Vector2d(50, -41*color))
 						.build();
 			}
 		}
+		endPos = new Pose2d(50, -41*color, Math.toRadians(180));
 
 		if (Objects.equals(position, "left")) {
-			yellow_pixel_place = drive.trajectorySequenceBuilder(yellow_pixel.end())
+			yellow_pixel_place = drive.trajectorySequenceBuilder(endPos)
 					.lineTo(new Vector2d(50, -36*color))
 					.build();
+			endPos = new Pose2d(50, -36*color, Math.toRadians(180));
 		} else if (Objects.equals(position, "mid")) {
-			yellow_pixel_place = drive.trajectorySequenceBuilder(yellow_pixel.end())
+			yellow_pixel_place = drive.trajectorySequenceBuilder(endPos)
 					.lineTo(new Vector2d(50, -42*color))
 					.build();
+			endPos = new Pose2d(50, -42*color, Math.toRadians(180));
 		} else {
-			yellow_pixel_place = drive.trajectorySequenceBuilder(yellow_pixel.end())
+			yellow_pixel_place = drive.trajectorySequenceBuilder(endPos)
 					.lineTo(new Vector2d(50, -51*color))
 					.build();
+			endPos = new Pose2d(50, -51*color, Math.toRadians(180));
 		}
 
 		if (Objects.equals(end_pos, "close")) {
-			park = drive.trajectorySequenceBuilder(yellow_pixel_place.end())
+			park = drive.trajectorySequenceBuilder(endPos)
 					.lineTo(new Vector2d(50, -10*color))
 					.build();
 		}
 		else {
-			park = drive.trajectorySequenceBuilder(yellow_pixel_place.end())
+			park = drive.trajectorySequenceBuilder(endPos)
 					.lineTo(new Vector2d(50, -60*color))
 					.build();
 		}
