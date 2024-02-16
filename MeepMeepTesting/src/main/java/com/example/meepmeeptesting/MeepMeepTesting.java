@@ -16,9 +16,9 @@ public class MeepMeepTesting {
         double right_line;
 
         double color = 1.; // 1. for red, -1. for blue
-        center_line = -35;
-        left_line = -39;
-        right_line = -31;
+        center_line = 12;
+        left_line = 8.;
+        right_line = 15.5;
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 .setDimensions(17.92127, 14)

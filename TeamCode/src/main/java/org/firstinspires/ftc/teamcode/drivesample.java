@@ -71,6 +71,8 @@ public class drivesample extends LinearOpMode {
     public static boolean jointIsReverse = true;
     public static double jointPosition = 0.;
 
+    public double motorPower = 1.;
+
     @Override
     public void runOpMode() throws InterruptedException {
         //CONFIGS
@@ -94,11 +96,11 @@ public class drivesample extends LinearOpMode {
         //REVERSINGS
 
 
-        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -190,14 +192,17 @@ public class drivesample extends LinearOpMode {
             if(gamepad2.dpad_down){
                 arm.setPosition(0);
                 joint.setPosition(0.61);
+                motorPower = 1;
             }
             if(gamepad2.dpad_up){
                 arm.setPosition(0);
                 joint.setPosition(0.1);
+                motorPower = 1.;
             }
             if(gamepad2.y){
                 arm.setPosition(1);
                 joint.setPosition(0.31);
+                motorPower = 0.55;
             }
             if(gamepad2.right_bumper){
                 claw.setPosition(0.4);
@@ -227,10 +232,10 @@ public class drivesample extends LinearOpMode {
             double frontRightPower = (rotY - rotX - rx) / denominator;
             double backRightPower = (rotY + rotX - rx) / denominator;
 
-            frontLeftMotor.setPower(frontLeftPower);
-            backLeftMotor.setPower(backLeftPower);
-            frontRightMotor.setPower(frontRightPower);
-            backRightMotor.setPower(backRightPower);
+            frontLeftMotor.setPower(frontLeftPower * motorPower);
+            backLeftMotor.setPower(backLeftPower * motorPower);
+            frontRightMotor.setPower(frontRightPower * motorPower);
+            backRightMotor.setPower(backRightPower * motorPower);
 
             if (gamepad1.y) {
                 slideL.setPower(1);
